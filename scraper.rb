@@ -1,7 +1,10 @@
 #!/bin/env ruby
 # encoding: utf-8
 
+require 'everypolitician'
 require 'wikidata/fetcher'
+
+existing = EveryPolitician::Index.new.country("Uganda").lower_house.popolo.persons.map(&:wikidata).compact
 
 en_9 = EveryPolitician::Wikidata.wikipedia_xpath(
   url: 'https://en.wikipedia.org/wiki/List_of_members_of_the_ninth_Parliament_of_Uganda',
@@ -17,5 +20,5 @@ en_10 = EveryPolitician::Wikidata.wikipedia_xpath(
   xpath: '//table//td[1]//a[not(@class="new")]/@title',
 )
 
-EveryPolitician::Wikidata.scrape_wikidata(names: { en: en_9 | en_10 })
+EveryPolitician::Wikidata.scrape_wikidata(ids: existing, names: { en: en_9 | en_10 })
 
